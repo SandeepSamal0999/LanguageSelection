@@ -7,6 +7,18 @@ import DrawerDatas from "./Component/DrawerData";
 function App() {
   const [selectedImg, setSelectedImg] = useState("English");
   const [isOpen, setIsOpen] = useState(false);
+
+  const onImageClick = (e) => {
+    setSelectedImg(e.target.alt);
+    const newData = flagList.filter((data) => data.valueName === e.target.alt);
+    const seleObj = flagList.filter((data) => data.valueName === selectedImg);
+    const oldIndex = flagList.indexOf(newData[0]);
+    seleObj[0].size = newData[0].size;
+    newData[0].size = 50;
+    const center = Math.floor(flagList.length / 2);
+    flagList[oldIndex] = seleObj[0];
+    flagList[center] = newData[0];
+  };
   return (
     <div className="App">
       <header className="App-header">
@@ -18,11 +30,10 @@ function App() {
           {flagList.map((flags) => {
             return (
               <img
-                style={
-                  { height: flags.size, width: flags.size }
-                }
+                onClick={(e) => onImageClick(e)}
+                style={{ height: flags.size, width: flags.size }}
                 className={`flagImg flagImg${flags.size}`}
-                alt=""
+                alt={flags.valueName}
                 src={flags.flag}
               />
             );
